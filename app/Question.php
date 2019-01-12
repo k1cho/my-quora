@@ -32,4 +32,27 @@ class Question extends Model
     public function getCreatedAttribute() {
         return $this->created_at->diffForHumans();
     }
+
+    public function getVoteStringAttribute() {
+        return str_plural('vote', $this->votes);
+    }
+
+    public function getAnswerStringAttribute() {
+        return str_plural('answer', $this->answers);
+    }
+
+    public function getViewStringAttribute() {
+        return $this->views . " " . str_plural('view', $this->views);
+    }
+
+    public function getStatusAttribute() {
+        if($this->answers > 0) {
+            if($this->best_answer_id) {
+                return "answered-accepted";
+            }
+            return "answered";
+        }
+
+        return "unanswered";
+    }
 }
