@@ -13,9 +13,9 @@ class QuestionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Question $q)
     {
-        $questions = Question::latest()->paginate(5);
+        $questions = $q->latestPaginated();
         return view('questions.index', compact('questions'));
     }
 
