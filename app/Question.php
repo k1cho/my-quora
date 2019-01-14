@@ -65,4 +65,11 @@ class Question extends Model
     public function getBodyHtmlAttribute() {
         return \Parsedown::instance()->text($this->body);
     }
+
+    public function addAnswer($request) {
+        return $this->answers()->create([
+            'body' => $request,
+            'user_id' => auth()->user()->id
+        ]);
+    }
 }
