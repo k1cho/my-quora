@@ -12,14 +12,18 @@ class Question extends Model
 
     protected $fillable = ['title', 'body', 'user_id'];
 
-    protected $with = ['user'];
+    protected $with = ['user', 'answers'];
 
     public function user() {
         return $this->belongsTo(User::class);
     }
 
+    public function answers() {
+        return $this->hasMany(Answer::class);
+    }
+
     public function latestPaginated() {
-        return $this->latest()->paginate(5);
+        return $this->latest()->paginate(10);
     }
     
     public function setTitleAttribute($value) {
@@ -40,7 +44,7 @@ class Question extends Model
     }
 
     public function getAnswerStringAttribute() {
-        return str_plural('answer', $this->answers);
+        return str_plural('answer', $this->answers_count);
     }
 
     public function getViewStringAttribute() {
@@ -48,7 +52,7 @@ class Question extends Model
     }
 
     public function getStatusAttribute() {
-        if($this->answers > 0) {
+        if($this->answers_count > 0) {
             if($this->best_answer_id) {
                 return "answered-accepted";
             }

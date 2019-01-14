@@ -22,7 +22,7 @@
                                 <strong>{{ $question->votes }}</strong> {{ $question->vote_string }}
                             </div>
                             <div class="status {{ $question->status }}">
-                                <strong>{{ $question->answers }}</strong> {{ $question->answer_string }}
+                                <strong>{{ $question->answers_count }}</strong> {{ $question->answer_string }}
                             </div>
                             <div class="view">
                                 {{ $question->view_string }}
