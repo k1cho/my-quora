@@ -70,3 +70,75 @@ form.form-delete {
   background: #363636;
   color: #fff;
 }
+
+.vote-controls {
+  min-width: 60px;
+  margin-right: 30px;
+  text-align: center;
+  color: $gray-100;
+
+  span, a {
+    display: block;
+  }
+
+  span {
+    &.votes-count {
+      font-size: 25px;
+    }
+
+    &.favorites-count {
+      font-size: 12px;
+    }
+  }
+
+  a {
+    cursor: pointer;
+    color: $gray-600;
+
+    &.off {
+      color: #aaa;
+    }
+
+    &.off:hover {
+      color: #BA3B46;
+    }
+
+    &.on {
+      color: #fff;
+    }
+
+    &.on:hover {
+      color: #39AD3B;
+    }
+
+    &.favorite {
+      color: #fff;
+      &.favorited {
+        color: #FFD447;
+      }
+      &.favorited:hover {
+        color: #fff;
+      }
+    }
+
+    &.favorite:hover {
+      color: #FFD447;
+    }
+
+    &.vote-accept {
+      color: #fff;
+    }
+
+    &.vote-accept:hover {
+      color: #39AD3B;
+    }
+
+    &.vote-accepted {
+      color: #39AD3B;
+    }
+
+    &.vote-accepted:hover {
+      color: #fff;
+    }
+  }
+}
