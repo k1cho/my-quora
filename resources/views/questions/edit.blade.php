@@ -14,9 +14,10 @@
             <hr>
             <div class="card">
                 <div class="card-body">
-                    <form action="{{ route('questions.store') }}" method="POST">
+                    <form action="{{ route('questions.update', $question->id )}}" method="post">
                         {{ csrf_field() }}
-                        @include('questions._form', ['button' => 'Ask'])
+                        {{ method_field('PATCH') }}
+                        @include('questions._form', ['button' => 'Edit'])
                     </form>
                 </div>
             </div>

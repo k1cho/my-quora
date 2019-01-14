@@ -8,7 +8,9 @@ use App\User;
 
 class Question extends Model
 {
-    protected $fillable = ['title', 'body'];
+    protected $guarded = [];
+
+    protected $fillable = ['title', 'body', 'user_id'];
 
     protected $with = ['user'];
 
