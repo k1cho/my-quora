@@ -19,11 +19,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('questions', 'QuestionsController');
-
-// Route::get('/questions', 'QuestionsController@index')->name('questions.index');
-// Route::get('/questions/{question}', 'QuestionsController@show')->name('questions.show');
-// Route::get('/questions/create', 'QuestionsController@create')->name('questions.create');
-// Route::post('/questions', 'QuestionsController@store')->name('questions.store');
-// Route::get('/questions/{question}/edit', 'QuestionsController@edit')->name('questions.edit');
-// Route::patch('/questions/{question}/update', 'QuestionsController@update')->name('questions.update');
+Route::resource('questions', 'QuestionsController')->except('show');
+Route::get('/questions/{slug}', 'QuestionsController@show')->name('questions.show');
