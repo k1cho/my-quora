@@ -65,7 +65,10 @@ class QuestionsController extends Controller
      */
     public function edit(Question $question)
     {
-        return view('questions.edit', compact('question'));
+        if(\Gate::allows('update-question', $question)) {
+            return view('questions.edit', compact('question'));
+        }
+        abort(403, "Access denied");
     }
 
     /**
@@ -77,9 +80,13 @@ class QuestionsController extends Controller
      */
     public function update(Question $question, AskQuestionRequest $request)
     {
-        $question->update($request->only('title', 'body'));
+        if(\Gate::allows('update-question', $question)) {
+            $question->update($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success', "Your question has been updated");
+            return redirect()->route('questions.index')->with('success', "Your question has been updated");
+        }
+        abort(403, "Access denied");
+        
     }
 
     /**
@@ -90,8 +97,11 @@ class QuestionsController extends Controller
      */
     public function destroy(Question $question)
     {
-        $question->delete();
+        if(\Gate::allows('delete-question', $question)) {
+            $question->delete();
 
-        return redirect()->back()->with('success', 'Your question has been deleted');
+            return redirect()->back()->with('success', 'Your question has been deleted');
+        }
+        abort(403, "Access denied");
     }
 }
