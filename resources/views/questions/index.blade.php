@@ -14,7 +14,7 @@
             <hr>
             @include('layouts._messages')
             @foreach ($questions as $question)
-            <div class="card">
+            <div class="card grey">
                 <div class="card-body">
                     <div class="media">
                         <div class="d-flex flex-column counters">

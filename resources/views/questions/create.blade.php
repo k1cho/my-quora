@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container lighter-grey">
     <div class="row justify-content-center">
         <div class="col-md-12">
             <br>
@@ -12,7 +12,7 @@
                 </div>
             </div>
             <hr>
-            <div class="card">
+            <div class="card grey">
                 <div class="card-body">
                     <form action="{{ route('questions.store') }}" method="POST">
                         {{ csrf_field() }}
