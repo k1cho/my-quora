@@ -20,6 +20,7 @@ class QuestionsController extends Controller
     public function index(Question $q)
     {
         $questions = $q->latestPaginated();
+        
         return view('questions.index', compact('questions'));
     }
 

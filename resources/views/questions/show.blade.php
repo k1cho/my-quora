@@ -22,10 +22,20 @@
                             </a>
                             <span class="votes-count">123</span>
                             <a title="This question is not useful" class="vote-down off"><i class="fas fa-caret-down fa-2x"></i></a>
-                            <a title="Mark as Favorite" class="favorite mt-2 favorited">
+                            <a title="Mark as Favorite" 
+                                class="mt-2 {{ Auth::guest() ? 'off' : ($question->isFavorited() ? 'favorited' : 'favorite') }}"
+                                onclick="event.preventDefault(); 
+                                document.getElementById('favorite-question-{{ $question->id }}').submit();">
                                 <i class="fas fa-star fa-2x"></i>
+                                <span class="favorites-count">{{ $question->favorites_count }}</span>
                             </a>
-                            <span class="favorites-count">123</span>
+                            <form action="/questions/{{ $question->id }}/favorite" method="POST" id="favorite-question-{{ $question->id }}"
+                                style="display:none;">
+                                {{ csrf_field() }}
+                                @if ($question->isFavorited())
+                                    {{ method_field('DELETE') }}
+                                @endif
+                            </form>
                         </div>
                         <div class="media-body">
                             {!! $question->body_html !!}

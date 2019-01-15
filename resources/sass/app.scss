@@ -100,7 +100,7 @@ form.form-delete {
     }
 
     &.off:hover {
-      color: #BA3B46;
+      color: #aaa;
     }
 
     &.on {
@@ -113,16 +113,17 @@ form.form-delete {
 
     &.favorite {
       color: #fff;
-      &.favorited {
-        color: #FFD447;
-      }
-      &.favorited:hover {
-        color: #fff;
-      }
     }
 
     &.favorite:hover {
       color: #FFD447;
+    }
+
+    &.favorited {
+      color: #FFD447;
+    }
+    &.favorited:hover {
+      color: #fff;
     }
 
     &.vote-accept {

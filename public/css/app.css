@@ -10582,7 +10582,7 @@ form.form-delete {
 }
 
 .vote-controls a.off:hover {
-  color: #BA3B46;
+  color: #aaa;
 }
 
 .vote-controls a.on {
@@ -10597,16 +10597,16 @@ form.form-delete {
   color: #fff;
 }
 
-.vote-controls a.favorite.favorited {
-  color: #FFD447;
-}
-
-.vote-controls a.favorite.favorited:hover {
-  color: #fff;
-}
-
 .vote-controls a.favorite:hover {
   color: #FFD447;
+}
+
+.vote-controls a.favorited {
+  color: #FFD447;
+}
+
+.vote-controls a.favorited:hover {
+  color: #fff;
 }
 
 .vote-controls a.vote-accept {
