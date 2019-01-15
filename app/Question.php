@@ -72,4 +72,9 @@ class Question extends Model
             'user_id' => auth()->user()->id
         ]);
     }
+
+    public function acceptBestAnswer(Answer $answer) {
+        $this->best_answer_id = $answer->id;
+        $this->save();
+    }
 }
