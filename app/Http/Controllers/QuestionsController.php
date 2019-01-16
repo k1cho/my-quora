@@ -19,7 +19,7 @@ class QuestionsController extends Controller
      */
     public function index(Question $q)
     {
-        //dd(Question::class);
+        //dd($q->class);
         $questions = $q->latestPaginated();
         
         return view('questions.index', compact('questions'));

@@ -12,7 +12,7 @@ use App\Question;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, UserGettersTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -55,49 +55,27 @@ class User extends Authenticatable
     public function voteQuestion(Question $question, $vote) {
         $votesQuestions = $this->votesQuestions();
 
-        if($votesQuestions->where('votable_type', 'App\Question')->where('votable_id', $question->id)->exists()) {
-            $votesQuestions->updateExistingPivot($question, ['vote' => $vote]);
-        }
-        else {
-            $votesQuestions->attach($question, ['vote' => $vote]);
-        }
-
-        $question->load('votes');
-        $downVote = (int) $question->downVote()->sum('vote');
-        $upVote = (int) $question->upVote()->sum('vote');
-        $question->votes_count = $upVote + $downVote;
-        $question->save();
+        $this->_vote($votesQuestions, $question, 'App\Question', $vote);
     }
 
     public function voteAnswer(Answer $answer, $vote) {
         $votesAnswers = $this->votesAnswers();
 
-        if($votesAnswers->where('votable_type', 'App\Answer')->where('votable_id', $answer->id)->exists()) {
-            $votesAnswers->updateExistingPivot($answer, ['vote' => $vote]);
+        $this->_vote($votesAnswers, $answer, 'App\Answer', $vote);
+    }
+
+    private function _vote($relationship, $model, $className, $vote) {
+        if($relationship->where('votable_type', $className)->where('votable_id', $model->id)->exists()) {
+            $relationship->updateExistingPivot($model, ['vote' => $vote]);
         }
         else {
-            $votesAnswers->attach($answer, ['vote' => $vote]);
+            $relationship->attach($model, ['vote' => $vote]);
         }
 
-        $answer->load('votes');
-        $downVote = (int) $answer->downVote()->sum('vote');
-        $upVote = (int) $answer->upVote()->sum('vote');
-        $answer->votes_count = $upVote + $downVote;
-        $answer->save();
+        $model->load('votes');
+        $downVote = (int) $model->downVote()->sum('vote');
+        $upVote = (int) $model->upVote()->sum('vote');
+        $model->votes_count = $upVote + $downVote;
+        $model->save();
     }
-
-    public function getUrlAttribute() {
-        //return route("users.show", $this->id);
-        return '#';
-    }
-
-    public function getAvatarAttribute () {
-        // $email = $this->email;
-        // $size = 10;
-
-        // return "https://www.gravatar.com/avatar/" . md5(strtolower(trim($email))) . "&s=" . $size;
-
-        return Gravatar::image("https://www.gravatar.com/avatar/", 'Avatar', ['width' => 30, 'height' => 30]);
-    }
-
 }

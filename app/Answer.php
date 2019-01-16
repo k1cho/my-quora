@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Answer extends Model
 {
+    use VotableTrait, AnswerGettersTrait;
+
+
     protected $guarded = [];
 
     protected $fillable = ['body', 'question_id', 'user_id'];
@@ -38,31 +41,8 @@ class Answer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function votes() {
-        return $this->morphToMany(User::class, 'votable');
-    }
-
-    public function getBodyHtmlAttribute() {
-        return \Parsedown::instance()->text($this->body);
-    }
-
-    public function getCreatedAttribute() {
-        return $this->created_at->diffForHumans();
-    }
-
-    public function getStatusAttribute() {
-        return $this->isBest() ? 'vote-accepted' : 'vote-accept';
-    }
-
     public function isBest() {
         return $this->id === $this->question->best_answer_id;
     }
 
-    public function upVote() {
-        return $this->votes()->wherePivot('vote', 1);
-    }
-
-    public function downVote() {
-        return $this->votes()->wherePivot('vote', -1);
-    }
 }

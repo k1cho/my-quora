@@ -8,6 +8,9 @@ use App\User;
 
 class Question extends Model
 {
+    use VotableTrait, QuestionGettersTrait;
+
+
     protected $guarded = [];
 
     protected $fillable = ['title', 'body', 'user_id'];
@@ -26,52 +29,8 @@ class Question extends Model
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
     }
 
-    public function votes() {
-        return $this->morphToMany(User::class, 'votable');
-    }
-
     public function latestPaginated() {
         return $this->latest()->paginate(10);
-    }
-    
-    public function setTitleAttribute($value) {
-        $this->attributes['title'] = $value;
-        $this->attributes['slug'] = str_slug($value);
-    }
-
-    public function getUrlAttribute() {
-        return route("questions.show", $this->slug);
-    }
-
-    public function getCreatedAttribute() {
-        return $this->created_at->diffForHumans();
-    }
-
-    public function getVoteStringAttribute() {
-        return str_plural('vote', $this->votes_count);
-    }
-
-    public function getAnswerStringAttribute() {
-        return str_plural('answer', $this->answers_count);
-    }
-
-    public function getViewStringAttribute() {
-        return $this->views . " " . str_plural('view', $this->views);
-    }
-
-    public function getStatusAttribute() {
-        if($this->answers_count > 0) {
-            if($this->best_answer_id) {
-                return "answered-accepted";
-            }
-            return "answered";
-        }
-
-        return "unanswered";
-    }
-
-    public function getBodyHtmlAttribute() {
-        return \Parsedown::instance()->text($this->body);
     }
 
     public function addAnswer($request) {
@@ -88,17 +47,5 @@ class Question extends Model
 
     public function isFavorited() {
         return $this->favorites()->where('user_id', auth()->id())->count() > 0;
-    }
-
-    public function getFavoritesCountAttribute() {
-        return $this->favorites()->count();
-    }
-
-    public function upVote() {
-        return $this->votes()->wherePivot('vote', 1);
-    }
-
-    public function downVote() {
-        return $this->votes()->wherePivot('vote', -1);
     }
 }
