@@ -13,7 +13,7 @@
             </div>
             <hr>
             @include('layouts._messages')
-            @foreach ($questions as $question)
+            @forelse ($questions as $question)
             <div class="card grey">
                 <div class="card-body">
                     <div class="media">
@@ -59,7 +59,10 @@
                 </div>
             </div>
             <br>
-            @endforeach
+            @empty
+                <br>
+                <h2 class="text-center">No Questions yet.</h2>
+            @endforelse
             <br>
             <div class="mx-auto">
                 {{ $questions->links() }}
