@@ -10625,3 +10625,11 @@ form.form-delete {
   color: #fff;
 }
 
+.vote-controls a.downvote {
+  color: #fff;
+}
+
+.vote-controls a.downvote:hover {
+  color: #a82f2f;
+}
+

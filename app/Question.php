@@ -26,6 +26,10 @@ class Question extends Model
         return $this->belongsToMany(User::class, 'favorites')->withTimestamps();
     }
 
+    public function votes() {
+        return $this->morphToMany(User::class, 'votable');
+    }
+
     public function latestPaginated() {
         return $this->latest()->paginate(10);
     }
@@ -44,7 +48,7 @@ class Question extends Model
     }
 
     public function getVoteStringAttribute() {
-        return str_plural('vote', $this->votes);
+        return str_plural('vote', $this->votes_count);
     }
 
     public function getAnswerStringAttribute() {
@@ -88,5 +92,13 @@ class Question extends Model
 
     public function getFavoritesCountAttribute() {
         return $this->favorites()->count();
+    }
+
+    public function upVote() {
+        return $this->votes()->wherePivot('vote', 1);
+    }
+
+    public function downVote() {
+        return $this->votes()->wherePivot('vote', -1);
     }
 }

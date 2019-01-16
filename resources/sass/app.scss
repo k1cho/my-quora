@@ -141,5 +141,13 @@ form.form-delete {
     &.vote-accepted:hover {
       color: #fff;
     }
+
+    &.downvote {
+      color: #fff;
+    }
+
+    &.downvote:hover {
+      color: rgb(168, 47, 47);
+    }
   }
 }

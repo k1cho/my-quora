@@ -16,11 +16,11 @@
                     <div class="card-body">
                         <div class="media">
                             <div class="d-flex flex-column vote-controls">
-                                <a title="This answer is useful" class="vote-up on">
+                                <a title="This answer is useful" class="vote-up {{ Auth::guest() ? 'off' : 'vote-accept' }}">
                                     <i class="fas fa-caret-up fa-2x"></i>
                                 </a>
                                 <span class="votes-count">123</span>
-                                <a title="This answer is not useful" class="vote-down off"><i class="fas fa-caret-down fa-2x"></i></a>
+                                <a title="This answer is not useful" class="vote-down {{ Auth::guest() ? 'off' : 'downvote' }}"><i class="fas fa-caret-down fa-2x"></i></a>
                                 @can('accept', $answer)
                                 <a title="Accept answer" 
                                     class="{{ $answer->status }} mt-2" 

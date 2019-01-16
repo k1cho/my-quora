@@ -44,6 +44,31 @@ class User extends Authenticatable
         return $this->belongsToMany(Question::class, 'favorites')->withTimestamps();
     }
 
+    public function votesQuestions() {
+        return $this->morphedByMany(Question::class, 'votable');
+    }
+
+    public function votesAnswers() {
+        return $this->morphedByMany(Answer::class, 'votable');
+    }
+
+    public function voteQuestion(Question $question, $vote) {
+        $votesQuestions = $this->votesQuestions();
+
+        if($votesQuestions->where('votable_id', $question->id)->exists()) {
+            $votesQuestions->updateExistingPivot($question, ['vote' => $vote]);
+        }
+        else {
+            $votesQuestions->attach($question, ['vote' => $vote]);
+        }
+
+        $question->load('votes');
+        $downVote = (int) $question->downVote()->sum('vote');
+        $upVote = (int) $question->upVote()->sum('vote');
+        $question->votes_count = $upVote + $downVote;
+        $question->save();
+    }
+
     public function getUrlAttribute() {
         //return route("users.show", $this->id);
         return '#';
