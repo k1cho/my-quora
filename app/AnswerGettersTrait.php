@@ -5,7 +5,7 @@ namespace App;
 trait AnswerGettersTrait
 {
     public function getBodyHtmlAttribute() {
-        return \Parsedown::instance()->text($this->body);
+        return clean(\Parsedown::instance()->text($this->body));
     }
 
     public function getCreatedAttribute() {
