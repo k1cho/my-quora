@@ -55,7 +55,7 @@ class User extends Authenticatable
     public function voteQuestion(Question $question, $vote) {
         $votesQuestions = $this->votesQuestions();
 
-        if($votesQuestions->where('votable_id', $question->id)->exists()) {
+        if($votesQuestions->where('votable_type', 'App\Question')->where('votable_id', $question->id)->exists()) {
             $votesQuestions->updateExistingPivot($question, ['vote' => $vote]);
         }
         else {
@@ -67,6 +67,23 @@ class User extends Authenticatable
         $upVote = (int) $question->upVote()->sum('vote');
         $question->votes_count = $upVote + $downVote;
         $question->save();
+    }
+
+    public function voteAnswer(Answer $answer, $vote) {
+        $votesAnswers = $this->votesAnswers();
+
+        if($votesAnswers->where('votable_type', 'App\Answer')->where('votable_id', $answer->id)->exists()) {
+            $votesAnswers->updateExistingPivot($answer, ['vote' => $vote]);
+        }
+        else {
+            $votesAnswers->attach($answer, ['vote' => $vote]);
+        }
+
+        $answer->load('votes');
+        $downVote = (int) $answer->downVote()->sum('vote');
+        $upVote = (int) $answer->upVote()->sum('vote');
+        $answer->votes_count = $upVote + $downVote;
+        $answer->save();
     }
 
     public function getUrlAttribute() {

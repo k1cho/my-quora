@@ -16,15 +16,30 @@
                     <div class="card-body">
                         <div class="media">
                             <div class="d-flex flex-column vote-controls">
-                                <a title="This answer is useful" class="vote-up {{ Auth::guest() ? 'off' : 'vote-accept' }}">
+                                <a title="This answer is useful" class="vote-up {{ Auth::guest() ? 'off' : 'vote-accept' }}"
+                                    onclick="event.preventDefault(); 
+                                    document.getElementById('upvote-answer-{{ $answer->id }}').submit();">
                                     <i class="fas fa-caret-up fa-2x"></i>
                                 </a>
-                                <span class="votes-count">123</span>
-                                <a title="This answer is not useful" class="vote-down {{ Auth::guest() ? 'off' : 'downvote' }}"><i class="fas fa-caret-down fa-2x"></i></a>
-                                @can('accept', $answer)
-                                <a title="Accept answer" 
-                                    class="{{ $answer->status }} mt-2" 
+                                <span class="votes-count">{{ $answer->votes_count }}</span>
+                                <form action="/answers/{{ $answer->id }}/vote" method="POST" id="upvote-answer-{{ $answer->id }}"
+                                    style="display:none;">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="vote" value="1">
+                                </form>
+
+                                <a title="This answer is not useful" class="vote-down {{ Auth::guest() ? 'off' : 'downvote' }}"
                                     onclick="event.preventDefault(); 
+                                    document.getElementById('downvote-answer-{{ $answer->id }}').submit();">
+                                    <i class="fas fa-caret-down fa-2x"></i>
+                                </a>
+                                <form action="/answers/{{ $answer->id }}/vote" method="POST" id="downvote-answer-{{ $answer->id }}"
+                                    style="display:none;">
+                                    {{ csrf_field() }}
+                                    <input type="hidden" name="vote" value="-1">
+                                </form>
+                                @can('accept', $answer)
+                                <a title="Accept answer" class="{{ $answer->status }} mt-2" onclick="event.preventDefault(); 
                                     document.getElementById('accept-answer-{{ $answer->id }}').submit();">
                                     <i class="fas fa-check fa-2x"></i>
                                 </a>
@@ -34,9 +49,9 @@
                                 </form>
                                 @else
                                 @if ($answer->isBest())
-                                    <a title="Best Answer" class="{{ $answer->status }} mt-2">
-                                        <i class="fas fa-check fa-2x"></i>
-                                    </a>
+                                <a title="Best Answer" class="{{ $answer->status }} mt-2">
+                                    <i class="fas fa-check fa-2x"></i>
+                                </a>
                                 @endif
                                 @endcan
                             </div>
